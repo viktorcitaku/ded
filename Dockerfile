@@ -38,5 +38,4 @@ ENTRYPOINT ["/bin/sh", "entrypoint.sh"]
 CMD ["--deploydir","/opt/payara/deployments", \
   "--nocluster", \
   "--contextroot","ded", \
-  "--postbootcommandfile","post-boot-commands.asadmin", \
-  "--port", "${PORT}"]
+  "--postbootcommandfile","post-boot-commands.asadmin"]
