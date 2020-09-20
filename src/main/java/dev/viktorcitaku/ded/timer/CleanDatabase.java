@@ -10,11 +10,13 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
+import javax.ejb.Singleton;
+import javax.ejb.Startup;
 import javax.enterprise.concurrent.ManagedScheduledExecutorService;
-import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
-@ApplicationScoped
+@Startup
+@Singleton
 public class CleanDatabase {
 
   private static final Logger LOGGER = Logger.getLogger(CleanDatabase.class.getName());
@@ -45,8 +47,8 @@ public class CleanDatabase {
           logString.append("===== END DB CLEANUP ====\n");
           LOGGER.info(logString.toString());
         },
-        10,
-        60,
-        TimeUnit.SECONDS);
+        0,
+        1,
+        TimeUnit.MINUTES);
   }
 }
