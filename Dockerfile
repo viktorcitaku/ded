@@ -2,7 +2,7 @@ FROM maven:3.6.3-adoptopenjdk-11 AS compile-step
 COPY ./pom.xml /dockerdev/
 COPY ./src /dockerdev/src/
 WORKDIR /dockerdev
-RUN mvn clean install -DskipTests -Pdevelopment
+RUN mvn clean install -DskipTests -Pproduction
 
 FROM adoptopenjdk:11-jre-hotspot-bionic
 # Default payara micro ports to expose
@@ -38,4 +38,5 @@ ENTRYPOINT ["/bin/sh", "entrypoint.sh"]
 CMD ["--deploydir","/opt/payara/deployments", \
   "--nocluster", \
   "--contextroot","ded", \
-  "--postbootcommandfile","post-boot-commands.asadmin"]
+  "--postbootcommandfile","post-boot-commands.asadmin", \
+  "--port", "${PORT}"]

@@ -17,7 +17,7 @@ Browser: Chrome (latest), Firefox (latest)
 If you have docker installed the following commands have to be executed one after the other in the current root folder (Please tweak the docker commands accordingly).
 
 1. You need to run first a script which builds the React application and then copies over the files to the Java app dir. The following command is required: `./build.sh`
-2. `docker build -t ded .`
+2. `docker build --file Dockerfile.development -t ded .`
 3. `docker run -it -p 8080:8080 ded`
 
 ### Live Demo
