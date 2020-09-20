@@ -1,7 +1,6 @@
 .idea
 ded.iml
 node_modules
-package.json
 target
 
 # The SPA content in Java project should be ignored as well
