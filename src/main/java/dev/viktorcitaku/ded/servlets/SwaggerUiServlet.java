@@ -15,11 +15,12 @@ public class SwaggerUiServlet extends HttpServlet {
   @Override
   protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
     var servletContext = getServletContext();
-    try (var swaggerUiHtml = servletContext.getResourceAsStream("/swagger-ui.html")) {
+    try (var swaggerUiHtml = servletContext.getResourceAsStream("/swagger/swagger-ui.html")) {
+      resp.setStatus(HttpServletResponse.SC_OK);
       swaggerUiHtml.transferTo(resp.getOutputStream());
     } catch (IOException ex) {
       LOGGER.severe(ex.getMessage());
-      resp.setStatus(500);
+      resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
       resp.getWriter().println("Something went wrong!");
     }
   }
