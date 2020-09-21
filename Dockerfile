@@ -35,8 +35,8 @@ COPY --chown=payara:payara ./payara/payara-micro.jar .
 COPY --from=compile-step --chown=payara:payara ${APPLICATION_PATH} ${DEPLOY_DIR}
 
 ENTRYPOINT ["/bin/sh", "entrypoint.sh"]
-CMD ["--deploydir","/opt/payara/deployments", \
-  "--nocluster", \
-  "--contextroot","ded", \
-  "--postbootcommandfile","post-boot-commands.asadmin", \
-  "--port", "${PORT}"]
+#CMD ["--deploydir", "/opt/payara/deployments", \
+#  "--nocluster", \
+#  "--contextroot", "ded", \
+#  "--postbootcommandfile", "post-boot-commands.asadmin", \
+#  "--port", "$PORT"]
