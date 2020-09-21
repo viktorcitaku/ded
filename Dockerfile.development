@@ -13,8 +13,8 @@ ENV PAYARA_DIR=${HOME_DIR} \
     DEPLOY_DIR=/opt/payara/deployments \
     APPLICATION_PATH=/dockerdev/target/ded-1.0.0-SNAPSHOT.war \
     JVM_ARGS="" \
-    MEM_MAX_RAM_PERCENTAGE="70.0" \
-    MEM_XSS="512k"
+    MEM_MAX_RAM_PERCENTAGE="35.0" \
+    MEM_XSS="128k"
 
 RUN true \
     && mkdir -p "${HOME_DIR}" \
