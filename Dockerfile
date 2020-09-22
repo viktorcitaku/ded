@@ -11,6 +11,7 @@ ENV HOME_DIR=/opt/payara
 ENV PAYARA_DIR=${HOME_DIR} \
     SCRIPT_DIR=${HOME_DIR} \
     DEPLOY_DIR=/opt/payara/deployments \
+    MONITORING_DIR=/opt/payara/monitoring \
     APPLICATION_PATH=/dockerdev/target/ded-1.0.0-SNAPSHOT.war \
     JVM_ARGS="" \
     MEM_MAX_HEAP="128m" \
@@ -24,6 +25,7 @@ RUN true \
     && mkdir -p "${PAYARA_DIR}" \
     && mkdir -p "${SCRIPT_DIR}" \
     && mkdir -p "${DEPLOY_DIR}" \
+    && mkdir -p "${MONITORING_DIR}" \
     && chown -R payara:payara ${HOME_DIR} \
     && true
 
@@ -32,6 +34,7 @@ WORKDIR ${HOME_DIR}
 
 COPY --chown=payara:payara ./scripts/* ${SCRIPT_DIR}/
 COPY --chown=payara:payara ./payara/payara-micro.jar .
+COPY --chown=payara:payara ./monitoring ./monitoring
 COPY --from=compile-step --chown=payara:payara ${APPLICATION_PATH} ${DEPLOY_DIR}
 
 ENTRYPOINT ["/bin/sh", "entrypoint.sh"]
