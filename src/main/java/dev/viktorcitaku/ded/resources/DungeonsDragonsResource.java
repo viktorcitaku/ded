@@ -26,7 +26,26 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import lombok.NonNull;
+import org.eclipse.microprofile.openapi.annotations.Operation;
+import org.eclipse.microprofile.openapi.annotations.enums.SchemaType;
+import org.eclipse.microprofile.openapi.annotations.enums.SecuritySchemeIn;
+import org.eclipse.microprofile.openapi.annotations.enums.SecuritySchemeType;
+import org.eclipse.microprofile.openapi.annotations.headers.Header;
+import org.eclipse.microprofile.openapi.annotations.media.Content;
+import org.eclipse.microprofile.openapi.annotations.media.Schema;
+import org.eclipse.microprofile.openapi.annotations.parameters.Parameter;
+import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
+import org.eclipse.microprofile.openapi.annotations.responses.APIResponses;
+import org.eclipse.microprofile.openapi.annotations.security.SecurityRequirement;
+import org.eclipse.microprofile.openapi.annotations.security.SecurityScheme;
+import org.eclipse.microprofile.openapi.annotations.security.SecuritySchemes;
 
+@SecuritySchemes({
+  @SecurityScheme(
+      type = SecuritySchemeType.APIKEY,
+      in = SecuritySchemeIn.COOKIE,
+      apiKeyName = "DED_SESSION")
+})
 @Path("/dnd")
 @RequestScoped
 public class DungeonsDragonsResource {
@@ -40,6 +59,20 @@ public class DungeonsDragonsResource {
   @GET
   @Path("/classes")
   @Produces(MediaType.APPLICATION_JSON)
+  @APIResponses(
+      value = {
+        @APIResponse(
+            responseCode = "200",
+            description = "The list of Character classes.",
+            content = {
+              @Content(
+                  mediaType = "application/json",
+                  example =
+                      "[{\"value\":\"foo\",\"label\":\"Foo\"},{\"value\":\"bar\",\"label\":\"Bar\"}]")
+            }),
+        @APIResponse(responseCode = "500", description = "If something goes wrong.")
+      })
+  @Operation(summary = "Returns a list of Character classes.")
   public Response getClasses() throws IOException, InterruptedException {
     // Retrieve the Array and transform into the Object
     final var reader = doHttpCall("https://www.dnd5eapi.co/api/classes");
@@ -50,6 +83,20 @@ public class DungeonsDragonsResource {
   @GET
   @Path("/races")
   @Produces(MediaType.APPLICATION_JSON)
+  @APIResponses(
+      value = {
+        @APIResponse(
+            responseCode = "200",
+            description = "The list of Character races.",
+            content = {
+              @Content(
+                  mediaType = "application/json",
+                  example =
+                      "[{\"value\":\"foo\",\"label\":\"Foo\"},{\"value\":\"bar\",\"label\":\"Bar\"}]")
+            }),
+        @APIResponse(responseCode = "500", description = "If something goes wrong.")
+      })
+  @Operation(summary = "Returns a list of Character races.")
   public Response getRaces() throws IOException, InterruptedException {
     // Retrieve the Array and transform into the Object
     final var reader = doHttpCall("https://www.dnd5eapi.co/api/races");
@@ -60,6 +107,20 @@ public class DungeonsDragonsResource {
   @GET
   @Path("/equipment")
   @Produces(MediaType.APPLICATION_JSON)
+  @APIResponses(
+      value = {
+        @APIResponse(
+            responseCode = "200",
+            description = "The list of Character equipment.",
+            content = {
+              @Content(
+                  mediaType = "application/json",
+                  example =
+                      "[{\"value\":\"foo\",\"label\":\"Foo\"},{\"value\":\"bar\",\"label\":\"Bar\"}]")
+            }),
+        @APIResponse(responseCode = "500", description = "If something goes wrong.")
+      })
+  @Operation(summary = "Returns a list of Character equipment.")
   public Response getEquipment() throws IOException, InterruptedException {
     // Retrieve the Array and transform into the Object
     final var reader = doHttpCall("https://www.dnd5eapi.co/api/equipment");
@@ -70,7 +131,28 @@ public class DungeonsDragonsResource {
   @GET
   @Path("/spells/{clazz}")
   @Produces(MediaType.APPLICATION_JSON)
-  public Response getSpells(@PathParam("clazz") @NonNull String clazz)
+  @APIResponses(
+      value = {
+        @APIResponse(
+            responseCode = "200",
+            description = "The list of Character classes.",
+            content = {
+              @Content(
+                  mediaType = "application/json",
+                  example =
+                      "[{\"value\":\"foo\",\"label\":\"Foo\"},{\"value\":\"bar\",\"label\":\"Bar\"}]")
+            }),
+        @APIResponse(responseCode = "500", description = "If something goes wrong.")
+      })
+  @Operation(summary = "Returns a list of Character classes.")
+  public Response getSpells(
+      @Parameter(
+              required = true,
+              example = "foo",
+              schema = @Schema(type = SchemaType.STRING, example = "foo"))
+          @PathParam("clazz")
+          @NonNull
+          String clazz)
       throws IOException, InterruptedException {
     LOGGER.info(String.format("The Class to look for Spells: %s\n", clazz));
     // Retrieve the Array and transform into the Object
@@ -82,8 +164,28 @@ public class DungeonsDragonsResource {
   @POST
   @Path("/characters")
   @Consumes(MediaType.APPLICATION_JSON)
+  @APIResponses(
+      value = {
+        @APIResponse(
+            responseCode = "200",
+            description = "If payload was successfully saved.",
+            headers = {
+              @Header(
+                  required = true,
+                  name = "Set-Cookie",
+                  description = "The cookie DED_SESSION should be set.")
+            }),
+        @APIResponse(responseCode = "500", description = "If something went wrong."),
+      })
+  @Operation(summary = "Saves character by given email (transmitted via Cookie)")
+  @SecurityRequirement(name = "DED_SESSION")
   public Response saveCharacter(
-      @CookieParam("DED_SESSION") String email, DungeonsDragonsPayload payload) {
+      @CookieParam("DED_SESSION") String email,
+      @Parameter(
+              required = true,
+              schema =
+                  @Schema(type = SchemaType.OBJECT, implementation = DungeonsDragonsPayload.class))
+          DungeonsDragonsPayload payload) {
     // Retrieve the Array and transform into the Object
     LOGGER.info(String.format("The email that the character is going to be saved: %s\n", email));
 
@@ -99,6 +201,29 @@ public class DungeonsDragonsResource {
   @GET
   @Path("/characters")
   @Produces(MediaType.APPLICATION_JSON)
+  @APIResponses(
+      value = {
+        @APIResponse(
+            responseCode = "200",
+            description = "The list of saved characters",
+            headers = {
+              @Header(
+                  required = true,
+                  name = "Set-Cookie",
+                  description = "The cookie DED_SESSION should be set.")
+            },
+            content =
+                @Content(
+                    mediaType = "application/json",
+                    schema =
+                        @Schema(
+                            type = SchemaType.ARRAY,
+                            implementation = DungeonsDragonsPayload.class))),
+        @APIResponse(responseCode = "500", description = "If something went wrong."),
+      })
+  @Operation(
+      summary = "Returns the list of saved character by given email (transmitted via Cookie)")
+  @SecurityRequirement(name = "DED_SESSION")
   public Response getCharacters(@CookieParam("DED_SESSION") String email) {
     // Retrieve the Array and transform into the Object
     LOGGER.info(String.format("The email that the characters are going to be loaded: %s\n", email));
