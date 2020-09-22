@@ -1,4 +1,4 @@
-# Dungeons and Dragons (ded)
+# Dungeons and Dragons (ded) ![Travis (.org)](https://img.shields.io/travis/viktorcitaku/ded?label=tests)
 Simple Java + React Application using a public API to create fairy tale characters
 
 ### System requirements
