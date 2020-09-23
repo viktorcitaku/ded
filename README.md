@@ -22,10 +22,10 @@ If you have docker installed the following commands have to be executed one afte
 
 ### Live Demo
 
-[D&D](https://serene-crag-32422.herokuapp.com/ded)
+[D&D](http://serene-crag-32422.herokuapp.com/ded)
 
 ### Open API (Swagger)
 
 The current Swagger documentation might have some issues!
 
-[Swagger](https://serene-crag-32422.herokuapp.com/ded/swagger-ui)
+[Swagger](http://serene-crag-32422.herokuapp.com/ded/swagger-ui)

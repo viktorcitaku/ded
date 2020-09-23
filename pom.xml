@@ -116,8 +116,8 @@
 				<activeByDefault>false</activeByDefault>
 			</activation>
 			<properties>
-				<mp.openapi.yaml>https://serene-crag-32422.herokuapp.com/openapi</mp.openapi.yaml>
-				<mp.openapi.servers>https://serene-crag-32422.herokuapp.com/ded/api</mp.openapi.servers>
+				<mp.openapi.yaml>http://serene-crag-32422.herokuapp.com/openapi</mp.openapi.yaml>
+				<mp.openapi.servers>http://serene-crag-32422.herokuapp.com/ded/api</mp.openapi.servers>
 			</properties>
 		</profile>
 	</profiles>
